@@ -206,9 +206,9 @@ func expandEscapes(str string) string {
 		case "\"":
 			// Convert escaped quotes back to regular quotes
 			return "\""
-		case "u":
-			return match
 		case "$":
+			return match
+		case "u":
 			return match
 		default:
 			return match
