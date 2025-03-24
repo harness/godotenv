@@ -208,6 +208,8 @@ func expandEscapes(str string) string {
 			return "\""
 		case "$":
 			return match
+		case "v":
+			return "\v"
 		case "u":
 			return match
 		default:

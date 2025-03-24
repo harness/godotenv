@@ -195,7 +195,7 @@ func TestLoadQuotedEnv(t *testing.T) {
 		"OPTION_E": "1",
 		"OPTION_F": "2",
 		"OPTION_G": "",
-		//"OPTION_H": "\n",
+		"OPTION_H": "\n",
 		"OPTION_I": "echo 'asd'",
 		"OPTION_J": "line 1\nline 2",
 		"OPTION_K": "line one\nthis is \\'quoted\\'\none more line",
@@ -362,7 +362,7 @@ func TestParsing(t *testing.T) {
 
 	// it 'expands newlines in quoted strings' do
 	// expect(env('FOO="bar\nbaz"')).to eql('FOO' => "bar\nbaz")
-	//parseAndCompare(t, `FOO="bar\nbaz"`, "FOO", "bar\nbaz")
+	parseAndCompare(t, `FOO="bar\nbaz"`, "FOO", "bar\nbaz")
 
 	// it 'parses variables with "." in the name' do
 	// expect(env('FOO.BAR=foobar')).to eql('FOO.BAR' => 'foobar')
@@ -395,10 +395,10 @@ func TestParsing(t *testing.T) {
 	parseAndCompare(t, `FOO="ba#r"`, "FOO", "ba#r")
 	parseAndCompare(t, "FOO='ba#r'", "FOO", "ba#r")
 
-	////newlines and backslashes should be escaped
-	//parseAndCompare(t, `FOO="bar\n\ b\az"`, "FOO", "bar\n baz")
-	//parseAndCompare(t, `FOO="bar\\\n\ b\az"`, "FOO", "bar\\\n baz")
-	//parseAndCompare(t, `FOO="bar\\r\ b\az"`, "FOO", "bar\\r baz")
+	//newlines and backslashes should be escaped
+	parseAndCompare(t, `FOO="bar\n\ b\az"`, "FOO", "bar\n\\ b\\az")
+	parseAndCompare(t, `FOO="bar\\\n\ b\az"`, "FOO", "bar\\\\\n\\ b\\az")
+	parseAndCompare(t, `FOO="bar\\r\ b\az"`, "FOO", "bar\\\\r\\ b\\az")
 
 	parseAndCompare(t, `="value"`, "", "value")
 
@@ -498,7 +498,7 @@ func TestWrite(t *testing.T) {
 	//but single quotes are left alone
 	writeAndCompare(`key=va'lu'e`, `key="va'lu'e"`)
 	//// newlines, backslashes, and some other special chars are escaped
-	//writeAndCompare(`foo="\n\r\\r!"`, `foo="\n\r\\r\!"`)
+	writeAndCompare(`foo="\n\r\\r!"`, `foo="\n\r\\\\r\!"`)
 	// lines should be sorted
 	writeAndCompare("foo=bar\nbaz=buzz", "baz=\"buzz\"\nfoo=\"bar\"")
 	// integers should not be quoted
